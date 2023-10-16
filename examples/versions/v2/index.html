@@ -15,37 +15,34 @@
     <meta property="og:image:height" content="1725">
     <meta property="og:image:alt" content="Wheather Icon">
 
-    <meta property="twitter:card" content="Random Forecast">
+    <meta property="twitter:card" content="(WIP) Random Forecast">
     <meta property="twitter:description" content="A little, very accurate weather forecast!">
-    <meta property="twitter:title" content="Random Forecast">
+    <meta property="twitter:title" content="(WIP) Random Forecast">
     <meta property="twitter:image" content="https://random-forecast.juni7.repl.co/icon.png">
     
     <link rel="icon" type="image/png" href="icons/icon.png">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Random Forecast</title>
+    <title>(WIP) Random Forecast</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
-    
+
 <body>
-    <div class="nav_area">
-        <p class="nav_button_current">Day</p>
-        <a href="/timespan/week" class="nav_button">Week</a>
-        <a href="/timespan/month" class="nav_button">Month</a>
-        <a href="/timespan/" class="nav_button">Timespan</a>
-    </div>
-    
     <br><br>
     
     <div id="background" class="background">
         <div id="date_text">...</div>
         <br><br>
         <div id="weather_text" class="centered_text">...</div> <!--Cloudy, 90°F - 90% Rain-->
-        <pre id="temperature_extremes" class="centered_text"> ...   ... </pre>
+        <pre id="temperature_extremes" class="centered_text">...</pre>
         <div id="weather_cards" class="weather_cards">
-            <div class="weather_card_row">CONTENT</div>
-                <div class="weather_card" id="remove-me"> <div id="demo_card">...<br>..</div> <img src="../icons/question_mark.png" id="demo_image" title="..."> </div>
-            </div>
+            <div class="weather_card"> <div id="h0">...<br>..</div> <img src="icons/question_mark.png" id="hi0" title="..."> </div>
+            <div class="weather_card"> <div id="h2">...<br>..</div> <img src="icons/question_mark.png" id="hi2" title="..."> </div>
+            <div class="weather_card"> <div id="h3">...<br>..</div> <img src="icons/question_mark.png" id="hi3" title="..."> </div>
+            <div class="weather_card"> <div id="h4">...<br>..</div> <img src="icons/question_mark.png" id="hi4" title="..."> </div>
+            <div class="weather_card"> <div id="h1">...<br>..</div> <img src="icons/question_mark.png" id="hi1" title="..."> </div>
+            <div class="weather_card"> <div id="h5">...<br>..</div> <img src="icons/question_mark.png" id="hi5" title="..."> </div>
+            <div class="weather_card"> <div id="h6">...<br>..</div> <img src="icons/question_mark.png" id="hi6" title="..."> </div>
         </div>
     </div>
 
@@ -54,6 +51,7 @@
         <button id="us" class="button" type="submit" onclick="mode = setMode('us')">US</button>
         <button id="rest" class="selected_button" type="submit" onclick="mode = setMode('rest')">Rest of World</button>
         <button id="science" class="button" type="submit" onclick="mode = setMode('science')">Scientific</button>
+        Go to <a href="https://random-forecast.juni7.repl.co/" class="link">[BETA]</a> to see the progress <!--Used to link to "https://random-forecast.juni7.repl.co/wip"-->
     </div>
     <script src="script.js"></script>
 </body>

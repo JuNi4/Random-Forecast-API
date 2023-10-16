@@ -4,6 +4,14 @@
 //document.getElementById("date_text").innerHTML = "Monday 1/1/2000";
 //document.getElementById("weather_text").innerHTML = "Cloudy, 90°F - 90% Rain";
 
+// setup date input fields
+// set start date
+document.getElementById('start_date').valueAsDate = new Date();
+// set end date
+var d = new Date();
+d.setDate(d.getDate() + 7)
+document.getElementById('end_date').valueAsDate = d
+
 // Params
 const param = new URLSearchParams(window.location.search);
 
@@ -32,18 +40,24 @@ function getCookie(cname) {
 }
 
 // Settings //
-data_now = {"at":{"date":"0-0-0","day":"None","hour":0},"weather":{"temperature":{"current":0,"highest":0,"lowest":0},"weather":"None"}}
-data_today = []
-// add blank data to data_today
+data_now = {"at":{"date":"0-0-0","day":"None","hour":0},"weather":{"temperature":{"current":0,"highest":0,"lowest":0},"weather":"None","wind_speed":0}}
+data_day = []
+data_week = []
+// add blank data to data_week
 for (i = 0; i < 25; i++) {
-    data_today.push(data_now)
+    data_day.push(data_now)
+}
+for (i = 0; i < 25; i++) {
+    data_week.push(data_day)
 }
 
+
 // Get if a date is set
-if ( param.has("date") ) {
-    var DATE = param.get("date");
-} else {
-    var DATE = "";
+if ( param.has("start_date") ) {
+    document.getElementById('start_date').value = param.get("start_date")
+}
+if ( param.has("end_date") ) {
+    document.getElementById('end_date').value = param.get("end_date")
 }
 
 // amount of milliseconds between main call
@@ -54,20 +68,20 @@ var CALL_PAUSE = 0
 var CALL_PAUSE_LENGTH = 10*60 * (1000/MAIN_LOOP)
 
 // urls
-var API_URL = "http://localhost/api/" // the url of the api
-var OWN_URL = location.protocol + '//' + location.host + location.pathname // The own url
-var IMAGE_ROOT = "icons/" // Root of the icons folder
+var API_URL = "http://localhost/api/"                   // the url of the api
+var OWN_URL = location.protocol + '//' + location.host + location.pathname  // The own url
+var IMAGE_ROOT = "../icons"                                                 // Root of the icons folder
 
 // cookie settings
 COOKIE_EXPIRE = 30 // in days
 MODE_COOKIE = "uom_mode"
 
 // weather cards
-var PLAIN_CARD = '<div id="UCID" class="weather_card"> <div id="UID">...<br>..</div> <img src="'+IMAGE_ROOT+'question_mark.png" id="UIID" title="..."> </div>'
+var PLAIN_CARD = '<div id="UCID" class="weather_card"> <div id="UID">...<br>..<br>..</div> <img src="../../icons/question_mark.png" id="UIID" title="..."></div>'
 var ROW_DIV = '<div class="weather_card_row">CONTENT</div>'
 
-var NUM_CARDS = 9
-var CURRENT_CARD = 4
+var NUM_CARDS = 30
+var CURRENT_CARD = 0
 
 if ( param.has("cards") ) {
     NUM_CARDS = (param.get("cards"))*1
@@ -77,7 +91,7 @@ if ( param.has("cards") ) {
 // weather types
 var WEATHER_TYPES = {}
 
-fetch(IMAGE_ROOT+"/icons.json")
+fetch("https://random-forecast.juni7.repl.co/icons/icons.json")
     .then((res) => res.json())
     .then((text) => {
         // load weather types as json
@@ -222,7 +236,6 @@ function setMode(mode) {
     return (mode);
 }
 
-// function to call the weather api
 async function getWeatherData() {
     // check if call is paused
     if (CALL_PAUSE > 0) {
@@ -234,21 +247,20 @@ async function getWeatherData() {
     // get weather data for the current hour and day
     try {
         var d = new Date();
-        if (DATE == "") {
-            date = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
-        } else {
-            date = DATE;
-        }
-        const response = await fetch(API_URL+"/forecast/day?rmonth&date="+date);
+
+        START_DATE = document.getElementById('start_date').value
+        END_DATE = document.getElementById('end_date').value
+        
+        const response = await fetch(API_URL+"/forecast/range?rmonth&start_date="+START_DATE+"&end_date="+END_DATE);
         const jsonData = await response.json();
-        data_now = await jsonData[d.getHours()]
-        data_today = await jsonData
-    } catch {
+        data_now = await jsonData[0][d.getHours()]
+        data_week = await jsonData
+    } catch(e) {
+        console.warn("An error accured while fetching data from API: "+e)
         CALL_PAUSE = 0;
     }
 }
 
-// convert units
 function convertTemp(temp) {
     if (mode == "us") {
         temp = Math.round( K2F( temp ) ) + "°F"
@@ -260,11 +272,12 @@ function convertTemp(temp) {
 
     return temp
 }
+
 function convertSpeed(speed) {
     if (mode=="us") {
         return (speed / 1.609).toFixed(2) + " mph"
     } else {
-        return (speed + 0).toFixed(2) + " km/h"
+        return (speed.toFixed(2)) + " km/h"
     }
 }
 
@@ -275,11 +288,45 @@ var bgHeight = document.getElementById('background').offsetHeight;
 var days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
 var weathers = ["Sunshine", "Cloudy", "Partly Cloudy", "Overcast", "Raining", "Snowing", "Foggy", "Lightning", "Windy"]
 
+var old_d1 = new Date().getTime()
+var old_d1 = new Date().getTime()
+var diff = true
+
 // main thing
 function main() {
+    // get difference in days
+    date1 = document.getElementById('start_date').valueAsDate
+    date2 = document.getElementById('end_date').valueAsDate
+    
+    if (old_d1 != date1.getTime() || old_d2 != date2.getTime()) {
+        diff = true
+        old_d1 = date1.getTime()
+        old_d2 = date2.getTime()
+        CALL_PAUSE = 0
+    }
+    
+    // To calculate the time difference of two dates
+    var time_diff = date2.getTime() - date1.getTime()
+    // To calculate the no. of days between two dates
+    var difference = time_diff / (1000 * 3600 * 24);
+    
     // check if width has changed
     var w = document.getElementById('weather_cards').offsetWidth;
-    if (w != previus_width) {
+    if (w != previus_width || diff) {
+        // update card amount
+        NUM_CARDS = difference
+        // clamp cards between 0 and infinity
+        if ( NUM_CARDS <= 0 ) {
+            // set num cards to one
+            NUM_CARDS = 1
+            // change end date to one day in the future
+            var d = new Date();
+            d.setDate(d.getDate() + 1)
+            document.getElementById('end_date').valueAsDate = d
+        }
+        // update date
+        DATE = document.getElementById('start_date').value
+        // update cards
         weatherCardsSetup(w)
         previus_width = w
     }
@@ -296,6 +343,7 @@ function main() {
     } else {
         date = DATE
     }
+
     // add time
     date += " "+ d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
     
@@ -332,82 +380,109 @@ function main() {
     document.getElementById("weather_text").innerHTML = weather;
     document.getElementById("temperature_extremes").innerHTML = temp_extreme_str;
 
-
-    // get weather card data
-    var hour = d.getHours()
-    // if the hour is less than 3, set starting hour to 0
-    if ( hour < CURRENT_CARD ) {
-        hour = 0
-    // if there are less than 3 hours remaining, set the starting hour 7 hours less than 24
-    } else if ( hour > 24-NUM_CARDS ) {
-        hour = 24 - NUM_CARDS
-    // change the starting hour by -3 to have the first card be 3 hours ago
-    } else {
-        hour -= CURRENT_CARD
-    }
-
     // variables for weather cards
-    var hours  = []
-    var temps  = []
-    var images = []
+    var dates = []
+    var dotw = []
+    var temp_lows = []
+    var temp_highs = []
+    var wind_speeds = []
     var weathers = []
+    var images = []
     // get all valuesu
-    for ( i = hour; i < hour + NUM_CARDS; i++) {
-        // check if hour surpasses 24 or underpasses 0
-        if ( i < 0 || i > 23 ) {
-            images.push(IMAGE_ROOT + "question_mark.png")
-            hours.push("None")
-            temps.push("None")
+    for ( i = 0; i < NUM_CARDS; i++) {
+        // check if date surpasses data
+        if ( i < 0 || i > data_week.length ) {
+            //images.push(IMAGE_ROOT + "question_mark.png")
+            dates.push("None")
+            dotw.push("None")
+            temp_lows.push("None")
+            temp_highs.push("None")
+            wind_speed.push("None")
+            weathers.push("None")
+            images.push("")
             continue;
         }
         // add hour string to hours list
-        hours.push(i+":00")
+        dates.push(data_week[i][0]["at"]["date"])
         // add temperature
-        temps.push(convertTemp(data_today[i]["weather"]["temperature"]["current"]))
-        // add weather type
-        var weather = data_today[i]["weather"]["weather"]
-        if (weather == "Snowing") {
-            images.push(IMAGE_ROOT+"snowing.png")
-        } else if (weather == "Lightning") {
-            images.push(IMAGE_ROOT+"lightning.png")
-        } else if (weather == "Raining") {
-            images.push(IMAGE_ROOT+"rain.png")
-        } else if (weather == "Foggy") {
-            images.push(IMAGE_ROOT+"foggy.png")
-        } else if (weather == "Windy") {
-            images.push(IMAGE_ROOT+"windy.png")
-        } else if (["Cloudy","Overcast"].includes(weather)) {
-            images.push(IMAGE_ROOT+"cloudy.png")
-        } else if (weather == "Partly Cloudy") {
-            images.push(IMAGE_ROOT+"partly_cloudy.png")
-        } else if (weather == "Sunshine") {
-            images.push(IMAGE_ROOT+"sun.png")
-        } else {
-            if (weather != "None") {
-                console.warn("Can not identify weather "+weather)
+        temp_lows.push(convertTemp(data_week[i][0]["weather"]["temperature"]["lowest"]))
+        temp_highs.push(convertTemp(data_week[i][0]["weather"]["temperature"]["highest"]))
+
+        //weathers.push(data_today[i]["weather"]["weather"]);
+        // averages //
+        
+        // weather setup
+        weather_counts = {"Sunshine":0, "Cloudy":0, "Partly Cloudy":0, "Overcast":0, "Raining":0, "Snowing":0, "Foggy":0, "Windy":0, "Lightning":0}
+        // wind speed setup
+        wind_speed = 0
+
+        // quicker access
+        var data_day = data_week[i]
+
+        // add day of the week
+        dotw.push(data_day[0]["at"]["day"])
+        
+        // loop over all hours
+        for (h = 0; h < data_week[i].length; h++) {
+            // add wind speed
+            wind_speed += data_day[h]["weather"]["wind_speed"]
+            // add weather
+            try {
+                weather = data_day[h]["weather"]["weather"]
+            } catch {
+                weather = null
             }
-            // set weather symbol to ? if weather is not identified
-            images.push(IMAGE_ROOT+"question_mark.png")
+            // only add if weather_counts has weather
+            if ( weather_counts[weather] != null ) {
+                weather_counts[weather] ++;
+            }
         }
-        weathers.push(data_today[i]["weather"]["weather"]);
+        // make averages
+        wind_speed /= data_day.length
+        wind_speeds.push(convertSpeed(wind_speed))
+
+        // pick most common weather
+        common = ""
+        points = 0
+
+        for (const [key, value] of Object.entries(weather_counts)) {
+            // if value is higher
+            if (value > points) {
+                // update values
+                points = value
+                common = key
+            }
+        }
+        // if nothing was present, set to none
+        if ( points = 0 ) { common = "None" }
+
+        // get image from weather name
+        if ( WEATHER_TYPES[common] != null ) {
+            weathers.push(common)
+            images.push(WEATHER_TYPES[common])
+        } else {
+            weathers.push("None")
+            images.push("")
+        }
     }
 
     // update all weather cards
     for (i = 0; i < NUM_CARDS; i++) {
-        document.getElementById("h"+i).innerHTML = hours[i] + "<br>" + temps[i] + "<br>"
+        text = "<b>"+dotw[i]+"</b><br>"+dates[i] + "<br>"
+        text += "▴ " + temp_highs[i] + "  " + temp_lows[i] + " ▾"
+        document.getElementById("h"+i).innerHTML = text
         document.getElementById("hi"+i).title = weathers[i]
-        document.getElementById("hi"+i).src = images[i]
+        document.getElementById("hi"+i).src = images[i].replace("$IMAGE_ROOT",IMAGE_ROOT)
         // get current time
         var d = new Date()
         // highlight if card is current hour
-        if ( hours[i] == (d.getHours() + ":00") ) {
+        if ( i == 0 ) {
             // highlight element
             document.getElementById("hc"+i).classList.add("weather_card_current");
         } else {
             document.getElementById("hc"+i).classList.remove("weather_card_current");
         }
     }
-
     //} catch {}
 }
 

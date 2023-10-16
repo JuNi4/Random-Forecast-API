@@ -1,0 +1,235 @@
+:root {
+    --font: Open_Sans;
+    --font_size: 18px;
+    --weather_card_size: 14px;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+    /* Background color, same as discord bg */
+    background-color: #313338;
+    /* Text color, plain white */
+    color: #ffffff;
+    /* change font */
+    font-family: var(--font);
+    font-size: var(--font_size);
+}
+
+.link {
+    color: #62a0ea;
+}
+
+.background {
+    background-color: #404249;
+    color: #ffffff;
+    
+    padding: 10px;
+    border-radius: 10px;
+
+    /*
+    overflow-y: scroll;
+    scroll-behavior: smooth;*/
+}
+
+/* Nav Region */
+.nav_area {
+    
+    border-radius:5px;
+    float:left;
+    padding:2px;
+}
+
+.nav_button {
+    /*background-color: #404249;*/
+    color: #949ba4;
+    
+    float:left;
+    
+    margin:2px;
+    padding:5px;
+
+    border-radius:5px;
+
+    text-decoration:none;
+}
+
+.nav_button:hover {
+    background-color: #3b3c41;
+    color: #949ba4;
+    
+    float:left;
+    
+    margin:2px;
+    padding:5px;
+
+    border-radius:5px;
+
+    text-decoration:none;
+}
+
+.nav_button_current {
+    background-color: #404249;
+    color: #fffffff;
+    
+    float:left;
+    
+    margin:2px;
+    padding:5px;
+
+    border-radius:5px;
+
+    text-decoration:none;
+}
+
+/* Main body */
+.centered_text {
+    /* align text in center */
+    text-align: center;
+    /* Set font */
+    font-family: var(--font);
+    font-size: var(--font_size);
+}
+
+.region_buttons {
+    /* Alignmend of buttons */
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
+
+    color: #949ba4;
+
+    font-size: 12px;
+}
+
+.button {
+    /* Color of buttons */
+    /*background-color: #313338;*/
+    background: None;
+    color: #949ba4;
+
+    border: none;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #404249;
+    color: #ffffff;
+}
+
+.selected_button {
+    /* Color of buttons */
+    background-color: #404249;
+    color: #ffffff;
+
+    border: none;
+    border-radius: 5px;
+}
+
+/*
+.selected_button:hover {
+    background-color: #404249;
+    color: #ffffff;
+}
+*/
+
+.weather_cards {
+    /* New center code */
+    margin-left:auto;
+    margin-right: auto;
+
+    /* Set font */
+    font-family: var(--font);
+    font-size: var(--weather_card_size);
+}
+
+.weather_card_row {
+    /* Center content */
+    display: flex;
+    justify-content: center;
+    /* Set font */
+    font-family: var(--font);
+    font-size: var(--weather_card_size);
+}
+
+.weather_card {
+    /* Make (pixelated) images look better */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    /* Color scheme */
+    background-color: #2b2d31;
+    color: #ffffff;
+    /* Align all items in a lign */
+    float: left;
+    /* round the edges */
+    border-radius: 7px;
+    /* Add spacing between border and text */
+    padding: 7px;
+    /* Add spacing inbetween objects */
+    margin: 10px;
+    /* Align everything centered */
+    text-align:center;
+
+    width: 125px;
+}
+
+.weather_card:hover {
+    /* Color scheme */
+    background-color: #313338;
+    color: #ffffff;
+    /* Align all items in a lign */
+    float: left;
+    /* round the edges */
+    border-radius: 7px;
+    /* Add spacing between border and text */
+    padding: 7px;
+    /* Add spacing inbetween objects */
+    margin: 10px;
+    /* Align everything centered */
+    text-align:center;
+
+    
+    width: 125px;
+}
+
+.weather_card_current {
+    /* Color scheme */
+    background-color: #2b2d31;
+    color: #ffffff;
+    /* Border */
+    border-style: solid;
+    border-color: #86888c;
+    /* Align all items in a lign */
+    float: left;
+    /* round the edges */
+    border-radius: 7px;
+    /* Add spacing between border and text */
+    padding: 7px;
+    /* Add spacing inbetween objects */
+    margin: 10px;
+    /* Align everything centered */
+    text-align:center;
+
+    width: 125px;
+}
+
+.weather_card_current:hover {
+    /* Color scheme */
+    background-color: #313338;
+    color: #ffffff;
+    /* Border */
+    border-style: solid;
+    border-color: #86888c;
+    /* Align all items in a lign */
+    float: left;
+    /* round the edges */
+    border-radius: 7px;
+    /* Add spacing between border and text */
+    padding: 7px;
+    /* Add spacing inbetween objects */
+    margin: 10px;
+    /* Align everything centered */
+    text-align:center;
+    
+    width: 125px;
+}
