@@ -82,7 +82,7 @@ if ( param.has("cards") ) {
 // weather types
 var WEATHER_TYPES = {}
 
-fetch("https://random-forecast.juni7.repl.co/icons/icons.json")
+fetch("http://localhost/icons/icons.json")
     .then((res) => res.json())
     .then((text) => {
         // load weather types as json

@@ -63,6 +63,13 @@ var API_URL = "http://localhost/api/"                   // the url of the api
 var OWN_URL = location.protocol + '//' + location.host + location.pathname  // The own url
 var IMAGE_ROOT = "../../icons"                                              // Root of the icons folder
 
+// change nav button root
+nvBtns = document.getElementsByClassName("nav_button");
+
+for (var i = 0; i < nvBtns.length; i++ ) {
+    nvBtns[i].href = nvBtns[i].href.replace("$root",OWN_URL.replace("/timespan/month","").replace("index.html",""))
+}
+
 // cookie settings
 COOKIE_EXPIRE = 30 // in days
 MODE_COOKIE = "uom_mode"
@@ -82,7 +89,7 @@ if ( param.has("cards") ) {
 // weather types
 var WEATHER_TYPES = {}
 
-fetch("https://random-forecast.juni7.repl.co/icons/icons.json")
+fetch("http://localhost/icons/icons.json")
     .then((res) => res.json())
     .then((text) => {
         // load weather types as json
