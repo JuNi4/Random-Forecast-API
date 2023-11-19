@@ -1,4 +1,4 @@
 # Random-Forecast-API
 An api for getting random weather data
 
-In /example/ is a demo webpage using this api. (Might not work straight out of the box, some urls might need to be changed)
+For an example use of the api, click [here](https://random-forecast.juni7.repl.co).
